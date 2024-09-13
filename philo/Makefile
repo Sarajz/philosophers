@@ -6,7 +6,7 @@
 #    By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 18:13:06 by sarajime          #+#    #+#              #
-#    Updated: 2024/09/09 18:05:22 by sarajime         ###   ########.fr        #
+#    Updated: 2024/09/13 18:33:32 by sarajime         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 
-FILES = main.c print.c init.c utils.c getset.c routine.c time.c
+FILES = main.c print.c init.c utils.c getset.c routine.c time.c monitor.c
 
 all: $(NAME)
 

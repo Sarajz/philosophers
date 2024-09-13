@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:31:09 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/12 20:11:08 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:11:39 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,23 @@
 
 typedef struct s_philo
 {
-	pthread_t		thread;
 	int				dni;
 	int				num_meals;
-	int				*t_eat;
 	int				limit_meals;
+	int				*t_eat;
 	size_t			time;
 	size_t			last_t_eat;
+	pthread_t		thread;
+	pthread_mutex_t	mt_last_meal;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*m_write;
 	pthread_mutex_t	*mt_eat;
-
+	pthread_mutex_t	*mt_sleep;
 }					t_philo;
 
 typedef struct s_table
 {
-	pthread_t		monitor;
 	int				num_philo;
 	int				t_die;
 	int				t_eat;
@@ -59,9 +59,11 @@ typedef struct s_table
 	int				start;
 	int				dead;
 	t_philo			*philo;
+	pthread_t		monitor;
 	pthread_mutex_t	m_write;
-	pthread_mutex_t	*fork;
 	pthread_mutex_t	mt_eat;
+	pthread_mutex_t	mt_sleep;
+	pthread_mutex_t	*fork;
 }					t_table;
 
 long	ft_atol(const char *str);
@@ -74,11 +76,12 @@ int		init_table(char **argv, t_table *table);
 void	print_table(t_table *table);
 int		getter(pthread_mutex_t *mutex, int *var);
 void	print_msg(t_philo *philo, char *msg);
+void	going_tosleep(t_philo *philo);
 void	eat(t_philo *philo);
 void	*routine(void *arg);
 size_t	get_current_time(void);
 int		ft_usleep(size_t ms);
-void	monitor(void *arg);
+void	*monitor(void *arg);
 
 # endif
 

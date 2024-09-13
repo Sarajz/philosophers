@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:27:50 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/12 20:16:18 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:05:25 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	init_p_mutex(t_table *table, t_philo *philo)
 {
 	philo->m_write = &table->m_write;
 	philo->mt_eat = &table->mt_eat;
+	philo->mt_sleep = &table->mt_sleep;
 }
 
 int	init_philo(t_table *table)
@@ -51,8 +52,11 @@ int	init_philo(t_table *table)
 		table->philo[i].num_meals = 0;
 		table->philo[i].t_eat = &table->t_eat;
 		table->philo[i].time = get_current_time();
+		table->philo[i].last_t_eat = get_current_time();
 		table->philo[i].limit_meals = table->max_meals;
 		init_p_mutex(table, &table->philo[i]);
+		if (pthread_mutex_init(&table->philo[i].mt_last_meal, NULL))
+			return (printf("No mutex last time of eat\n"), 1);
 	}
 	assing_fork(table);
 	i = -1;
@@ -92,6 +96,8 @@ int	init_table(char **argv, t_table *table)
 		return (printf("No mutex write\n"), 1);
 	if (pthread_mutex_init(&table->mt_eat, NULL))
 		return (printf("No mutex eat\n"), 1);
+	if (pthread_mutex_init(&table->mt_sleep, NULL))
+		return (printf("No mutex sleep\n"), 1);
 	init_philo(table);
 	return (0);
 }
