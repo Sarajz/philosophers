@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:31:09 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/13 19:11:39 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/09/16 19:41:02 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,18 @@
 # define THINK "Is thinking\n"
 # define DIED "Died\n"
 
+typedef struct s_table	t_table;
+
 typedef struct s_philo
 {
 	int				dni;
 	int				num_meals;
 	int				limit_meals;
 	int				*t_eat;
+	int				*t_sleep;
 	size_t			time;
 	size_t			last_t_eat;
+	t_table			*table;
 	pthread_t		thread;
 	pthread_mutex_t	mt_last_meal;
 	pthread_mutex_t	*l_fork;

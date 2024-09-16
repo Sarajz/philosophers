@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 19:26:31 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/13 18:55:29 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/09/16 18:35:25 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	philo_dead(t_table *table, int i)
 
 	elapsed = get_current_time() - getter(&table->philo[i].mt_last_meal,
 			(int*)&table->philo[i].last_t_eat);
+	printf("%d\n", elapsed);
 	if (getter(&table->philo[i].mt_last_meal,
 			(int*)&table->philo[i].num_meals) == table->max_meals)
 		return (2);
@@ -33,12 +34,12 @@ void	*monitor(void *arg)
 	int		is_dead;
 	t_table	*table;
 
-	i = -1;
 	table = (t_table *)arg;
-	while (table->dead == 1)
+	while (table->dead != 1)
 	{
+		i = -1;
 		full = 0;
-		while (++i < table->num_philo && table->dead == 1)
+		while (++i < table->num_philo && table->dead != 1)
 		{
 			is_dead = philo_dead(table, i);
 			if (is_dead == 1)
