@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 14:02:25 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/16 19:53:59 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/10/22 18:25:47 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	print_msg(t_philo *philo, char *msg)
 
 	time = get_current_time() - philo->time;
 	pthread_mutex_lock(philo->m_write);
-	printf("%ld %d %s", time, philo->dni + 1, msg);
+	if (!dead_flag(philo))
+		printf("%ld %d %s", time, philo->dni + 1, msg);
 	pthread_mutex_unlock(philo->m_write);
 }
 
@@ -51,17 +52,16 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->dni % 2 == 0)
 		ft_usleep(1);
-	while (!philo->table->dead)
+	while (!dead_flag(philo))
 	{
-		if (!philo->table->dead) //check_flag
-			print_msg(philo, THINK);
 		if (philo->num_meals == philo->limit_meals)
 			break ;
-		if (!philo->table->dead)
+		if (!dead_flag(philo))
 			eat(philo);
-		if (!philo->table->dead)
+		if (!dead_flag(philo))
 			going_tosleep(philo);
+		if (!dead_flag(philo))
+			print_msg(philo, THINK);
 	}
 	return NULL;
 }
-// HACER MUTEX DE TABLE-DEAD.

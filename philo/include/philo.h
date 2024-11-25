@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:31:09 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/16 19:41:02 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:25:02 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_philo
 	pthread_mutex_t	*m_write;
 	pthread_mutex_t	*mt_eat;
 	pthread_mutex_t	*mt_sleep;
+	pthread_mutex_t	*m_dead;
 }					t_philo;
 
 typedef struct s_table
@@ -62,11 +63,13 @@ typedef struct s_table
 	int				max_meals;
 	int				start;
 	int				dead;
+	size_t			time;
 	t_philo			*philo;
 	pthread_t		monitor;
 	pthread_mutex_t	m_write;
 	pthread_mutex_t	mt_eat;
 	pthread_mutex_t	mt_sleep;
+	pthread_mutex_t	m_dead;
 	pthread_mutex_t	*fork;
 }					t_table;
 
@@ -77,6 +80,7 @@ int		assing_fork(t_table *table);
 void	init_p_mutex(t_table *table, t_philo *philo);
 int		init_philo(t_table *table);
 int		init_table(char **argv, t_table *table);
+int		init_pthread(t_table *table);
 void	print_table(t_table *table);
 int		getter(pthread_mutex_t *mutex, int *var);
 void	print_msg(t_philo *philo, char *msg);
@@ -86,12 +90,6 @@ void	*routine(void *arg);
 size_t	get_current_time(void);
 int		ft_usleep(size_t ms);
 void	*monitor(void *arg);
+int		dead_flag(t_philo *philo);
 
 # endif
-
-
-
-// philo, tiempo morir, comer, dormir, comidas max.
-
-
-//duracion de comida + tiempo para comer > tiempo de muerte (saber si alguien va a morir)

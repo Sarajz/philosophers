@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:53:45 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/16 19:53:49 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:25:18 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@ int	getter(pthread_mutex_t *mutex, int *var)
 	return (result);
 }
 
-int	check_flag(t_philo *philo)
+int	dead_flag(t_philo *philo)
 {
-	pthread_mutex_lock(philo->table->dead);
+	pthread_mutex_lock(philo->m_dead);
 	if (philo->table->dead == 1)
 	{
-		pthread_mutex_unlock(philo->table->dead);
+		pthread_mutex_unlock(philo->m_dead);
 		return (1);
 	}
-	pthread_mutex_unlock(philo->table->dead);
+	pthread_mutex_unlock(philo->m_dead);
 	return (0);
 }
-

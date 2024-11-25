@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:27:50 by sarajime          #+#    #+#             */
-/*   Updated: 2024/09/16 19:38:08 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:42:19 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	assing_fork(t_table *table)
 	return (0);
 }
 
-void	init_p_mutex(t_table *table, t_philo *philo)
+void	assing_p_mutex(t_table *table, t_philo *philo)
 {
+	philo->m_dead = &table->m_dead;
 	philo->m_write = &table->m_write;
 	philo->mt_eat = &table->mt_eat;
 	philo->mt_sleep = &table->mt_sleep;
@@ -52,21 +53,32 @@ int	init_philo(t_table *table)
 		table->philo[i].num_meals = 0;
 		table->philo[i].t_eat = &table->t_eat;
 		table->philo[i].t_sleep = &table->t_sleep;
-		table->philo[i].time = get_current_time();
+		//table->philo[i].time = get_current_time();
 		table->philo[i].table = table;
 		table->philo[i].last_t_eat = get_current_time();
 		table->philo[i].limit_meals = table->max_meals;
-		init_p_mutex(table, &table->philo[i]);
+		assing_p_mutex(table, &table->philo[i]);
 		if (pthread_mutex_init(&table->philo[i].mt_last_meal, NULL))
 			return (printf("No mutex last time of eat\n"), 1);
 	}
 	assing_fork(table);
+	if (init_pthread(table))
+		return (printf("No pthread\n"), 1);
+	return(0);
+}
+
+int	init_pthread(t_table *table)
+{
+	int	i;
+
 	i = -1;
+	table->time = get_current_time();
 	if (pthread_create(&table->monitor,
 			NULL, &monitor, (table)))
 		return (printf("No thread monitor\n"), 1);
 	while (++i < table->num_philo)
 	{
+		table->philo[i].time = get_current_time();
 		if (pthread_create(&table->philo[i].thread,
 				NULL, &routine, &(table->philo[i])))
 			return (printf("No thread routine\n"), 1);
@@ -94,14 +106,14 @@ int	init_table(char **argv, t_table *table)
 	table->max_meals = -1;
 	if (argv[5])
 		table->max_meals = ft_atol(argv[5]);
-	if (pthread_mutex_init(&table->m_write, NULL))
+	if (pthread_mutex_init(&table->m_write, NULL))  //ESTO VA A FUNCION DE INIT MUTE
 		return (printf("No mutex write\n"), 1);
 	if (pthread_mutex_init(&table->mt_eat, NULL))
 		return (printf("No mutex eat\n"), 1);
 	if (pthread_mutex_init(&table->mt_sleep, NULL))
 		return (printf("No mutex sleep\n"), 1);
-	if (pthread_mutex_init(&table->mt_sleep, NULL))
-		return (printf("No mutex sleep\n"), 1);
+	if (pthread_mutex_init(&table->m_dead, NULL))
+		return (printf("No mutex dead\n"), 1);
 	init_philo(table);
 	return (0);
 }
