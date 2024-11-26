@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 14:02:25 by sarajime          #+#    #+#             */
-/*   Updated: 2024/10/22 18:25:47 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:13:42 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ void	*routine(void *arg)
 		if (!dead_flag(philo))
 			print_msg(philo, THINK);
 	}
-	return NULL;
+	return (NULL);
 }

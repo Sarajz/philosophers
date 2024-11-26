@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:27:50 by sarajime          #+#    #+#             */
-/*   Updated: 2024/10/23 19:42:19 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/26 19:57:44 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,19 @@ int	assing_fork(t_table *table)
 		if (pthread_mutex_init(&table->fork[i], NULL))
 			return (printf("No init forks\n"), 1);
 	i = -1;
-	while (++i < table->num_philo - 1)
+	while (++i < table->num_philo)
 	{
-		table->philo[i].l_fork = &table->fork[i];
-		table->philo[i].r_fork = &table->fork[i + 1];
+		if (table->num_philo % 2 == 0)
+		{
+			table->philo[i].l_fork = &table->fork[i];
+			table->philo[i].r_fork = &table->fork[(i + 1) % table->num_philo];
+		}
+		else
+		{
+			table->philo[i].r_fork = &table->fork[i];
+			table->philo[i].l_fork = &table->fork[(i + 1) % table->num_philo];
+		}
 	}
-	table->philo[i].l_fork = &table->fork[i];
-	table->philo[i].r_fork = &table->fork[0];
 	return (0);
 }
 
@@ -53,7 +59,6 @@ int	init_philo(t_table *table)
 		table->philo[i].num_meals = 0;
 		table->philo[i].t_eat = &table->t_eat;
 		table->philo[i].t_sleep = &table->t_sleep;
-		//table->philo[i].time = get_current_time();
 		table->philo[i].table = table;
 		table->philo[i].last_t_eat = get_current_time();
 		table->philo[i].limit_meals = table->max_meals;
@@ -64,7 +69,7 @@ int	init_philo(t_table *table)
 	assing_fork(table);
 	if (init_pthread(table))
 		return (printf("No pthread\n"), 1);
-	return(0);
+	return (0);
 }
 
 int	init_pthread(t_table *table)
@@ -106,7 +111,7 @@ int	init_table(char **argv, t_table *table)
 	table->max_meals = -1;
 	if (argv[5])
 		table->max_meals = ft_atol(argv[5]);
-	if (pthread_mutex_init(&table->m_write, NULL))  //ESTO VA A FUNCION DE INIT MUTE
+	if (pthread_mutex_init(&table->m_write, NULL))
 		return (printf("No mutex write\n"), 1);
 	if (pthread_mutex_init(&table->mt_eat, NULL))
 		return (printf("No mutex eat\n"), 1);

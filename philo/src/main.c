@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:38:51 by sarajime          #+#    #+#             */
-/*   Updated: 2024/10/23 19:49:06 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:23:18 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@ int	main(int argc, char **argv)
 	}
 	else
 		return (1);
-	//print_table(&table);
+	bye_mutex(&table);
+	free(table.philo);
+	free(table.fork);
 }

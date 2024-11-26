@@ -6,7 +6,7 @@
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 19:26:31 by sarajime          #+#    #+#             */
-/*   Updated: 2024/10/22 19:30:55 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/26 19:39:07 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,26 @@ void	print_dead(t_table *table, int i)
 	pthread_mutex_unlock(&table->m_write);
 }
 
-//bloqueo print, bloqueo muerte, printeo muerte, cambio la flag, desbloqueo muerte, desbloqueo print
-
 void	*monitor(void *arg)
 {
 	int		i;
 	int		full;
-	int		is_dead;
 	t_table	*table;
 
 	table = (t_table *)arg;
-	while (table->dead != 1)
+	while (getter(&table->m_dead, &table->dead) != 1)
 	{
 		i = -1;
 		full = 0;
-		while (++i < table->num_philo && table->dead != 1)
+		while (++i < table->num_philo
+			&& getter(&table->m_dead, &table->dead) != 1)
 		{
-			is_dead = philo_dead(table, i);
-			if (is_dead == 1)
+			if (philo_dead(table, i) == 1)
 			{
 				print_msg(table->philo, DIED);
-				table->dead = 1;
+				setter(&table->m_dead, &table->dead, 1);
 			}
-			else if (is_dead == 2)
+			else if (philo_dead(table, i) == 2)
 				full++;
 		}
 		if (table->num_philo == full)
@@ -69,5 +66,3 @@ void	*monitor(void *arg)
 	}
 	return (NULL);
 }
-
-
