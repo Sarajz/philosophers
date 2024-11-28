@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: sarajime <sarajime@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:27:50 by sarajime          #+#    #+#             */
-/*   Updated: 2024/11/26 19:57:44 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/28 21:35:55 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,24 @@ int	init_pthread(t_table *table)
 	if (pthread_create(&table->monitor,
 			NULL, &monitor, (table)))
 		return (printf("No thread monitor\n"), 1);
-	while (++i < table->num_philo)
+	if (table->num_philo == 1)
 	{
+		i = 0;
 		table->philo[i].time = get_current_time();
 		if (pthread_create(&table->philo[i].thread,
-				NULL, &routine, &(table->philo[i])))
+				NULL, &solo_routine, &(table->philo[i])))
 			return (printf("No thread routine\n"), 1);
+		i++;
+	}
+	else
+	{
+		while (++i < table->num_philo)
+		{
+			table->philo[i].time = get_current_time();
+			if (pthread_create(&table->philo[i].thread,
+					NULL, &routine, &(table->philo[i])))
+				return (printf("No thread routine\n"), 1);
+		}
 	}
 	while (--i >= 0)
 		if (pthread_join(table->philo[i].thread, NULL))
@@ -99,7 +111,7 @@ int	init_pthread(t_table *table)
 int	init_table(char **argv, t_table *table)
 {
 	table->num_philo = ft_atol(argv[1]);
-	if (table->num_philo < 0 || table->num_philo > 200)
+	if (table->num_philo <= 0 || table->num_philo > 200)
 		return (printf("Invalid num of philos\n"), 1);
 	table->philo = malloc(sizeof(t_philo) * (table->num_philo));
 	if (!table->philo)
