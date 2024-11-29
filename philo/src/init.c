@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarajime <sarajime@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 14:27:50 by sarajime          #+#    #+#             */
-/*   Updated: 2024/11/28 21:35:55 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:15:16 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,7 @@ int	init_pthread(t_table *table)
 		i++;
 	}
 	else
-	{
-		while (++i < table->num_philo)
-		{
-			table->philo[i].time = get_current_time();
-			if (pthread_create(&table->philo[i].thread,
-					NULL, &routine, &(table->philo[i])))
-				return (printf("No thread routine\n"), 1);
-		}
-	}
+		init_pthread_routine(table, i);
 	while (--i >= 0)
 		if (pthread_join(table->philo[i].thread, NULL))
 			return (printf("No join thread\n"), 1);

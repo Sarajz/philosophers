@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sarajime <sarajime@student.42malaga.com    +#+  +:+       +#+         #
+#    By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 18:13:06 by sarajime          #+#    #+#              #
-#    Updated: 2024/11/28 19:04:28 by sarajime         ###   ########.fr        #
+#    Updated: 2024/11/29 14:30:17 by sarajime         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CFLAGS = -g -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -g -Wall -Wextra -Werror #-fsanitize=thread
 IFLAG = -I./include
 
 SRC_DIR = src

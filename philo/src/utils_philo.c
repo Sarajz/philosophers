@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getset.c                                           :+:      :+:    :+:   */
+/*   utils_philo.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 17:53:45 by sarajime          #+#    #+#             */
-/*   Updated: 2024/11/26 18:36:05 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:15:11 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,16 @@ void	bye_mutex(t_table *table)
 	pthread_mutex_destroy(&table->m_write);
 	pthread_mutex_destroy(&table->mt_eat);
 	pthread_mutex_destroy(&table->mt_sleep);
+}
+
+int	init_pthread_routine(t_table *table, int i)
+{
+	while (++i < table->num_philo)
+	{
+		table->philo[i].time = get_current_time();
+		if (pthread_create(&table->philo[i].thread,
+				NULL, &routine, &(table->philo[i])))
+			return (printf("No thread routine\n"), 1);
+	}
+	return (0);
 }

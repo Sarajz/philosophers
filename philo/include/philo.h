@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarajime <sarajime@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: sarajime <sarajime@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:31:09 by sarajime          #+#    #+#             */
-/*   Updated: 2024/11/28 21:20:36 by sarajime         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:15:40 by sarajime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	init_p_mutex(t_table *table, t_philo *philo);
 int		init_philo(t_table *table);
 int		init_table(char **argv, t_table *table);
 int		init_pthread(t_table *table);
+int		init_pthread_routine(t_table *table, int i);
 int		getter(pthread_mutex_t *mutex, int *var);
 void	setter(pthread_mutex_t *mutex, int *var, int n);
 void	print_msg(t_philo *philo, char *msg);
